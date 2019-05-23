@@ -12,42 +12,60 @@ import java8.data.Person;
  */
 public class Method_02_Test {
 
-    // tag::IDao[]
-    interface IDao {
-        List<Person> findAll();
+	// tag::IDao[]
+	interface IDao {
+		List<Person> findAll();
 
-        // TODO créer une méthode String format()
-        // TODO la méthode retourne une chaîne de la forme [<nb_personnes> persons]
-        // TODO exemple de résultat : "[14 persons]", "[30 persons]"
-    }
-    // end::IDao[]
+		// TODO créer une méthode String format()
+		// TODO la méthode retourne une chaîne de la forme [<nb_personnes> persons]
+		// TODO exemple de résultat : "[14 persons]", "[30 persons]"
 
-    // tag::DaoA[]
-    class DaoA implements IDao {
+		default String format() {
+			String maChaine = "[";
+			maChaine += findAll().size();
+			maChaine += " persons]";
+			return maChaine;
+		}
 
-        List<Person> people = Data.buildPersonList(20);
+	}
+	// end::IDao[]
 
-        @Override
-        public List<Person> findAll() {
-            return people;
-        }
+	// tag::DaoA[]
+	class DaoA implements IDao {
 
-        // TODO redéfinir la méthode String format()
-        // TODO la méthode retourne une chaîne de la forme DaoA[<nb_personnes> persons]
-        // TODO exemple de résultat : "DaoA[14 persons]", "DaoA[30 persons]"
-        // TODO l'implémentation réutilise la méthode format() de l'interface
+		List<Person> people = Data.buildPersonList(20);
 
-    }
-    // end::DaoA[]
+		@Override
+		public List<Person> findAll() {
+			return people;
+		}
 
-    @Test
-    public void test_daoA_format() throws Exception {
+		// TODO redéfinir la méthode String format()
+		// TODO la méthode retourne une chaîne de la forme DaoA[<nb_personnes> persons]
+		// TODO exemple de résultat : "DaoA[14 persons]", "DaoA[30 persons]"
+		// TODO l'implémentation réutilise la méthode format() de l'interface
 
-        DaoA daoA = new DaoA();
+		public String format() {
 
-        // TODO invoquer la méthode format() pour que le test soit passant
-        String result = null;
+			String maChaine = "DaoA[";
+			maChaine += findAll().size();
+			maChaine += " persons]";
 
-        "DaoA[20 persons]".equals(result);
-    }
+			return maChaine;
+
+		}
+
+	}
+	// end::DaoA[]
+
+	@Test
+	public void test_daoA_format() throws Exception {
+
+		DaoA daoA = new DaoA();
+
+		// TODO invoquer la méthode format() pour que le test soit passant
+		String result = daoA.format();
+
+		assert "DaoA[20 persons]".equals(result);
+	}
 }
